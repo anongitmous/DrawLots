@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DrawLots": {
+      "commandName": "Project",
+      "commandLineArgs": "cheater"
+    }
+  }
+}
