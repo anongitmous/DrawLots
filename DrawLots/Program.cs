@@ -31,7 +31,6 @@ var hour = dt.Hour;
 var minute = dt.Minute;
 var second = dt.Second;
 var microsecond = dt.Millisecond;
-var nanosecond = dt.Nanosecond;
 var meridiemHour = dt.ToString("h:mm:ss tt");
 Console.WriteLine($"Hello! Today is {dayOfWeek}, {month}/{day}/{year}, and the time is {meridiemHour}.");
 
