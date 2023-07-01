@@ -264,7 +264,7 @@ while (null == winner)
         person.HowClose = Math.Abs(theNumber - person.Guess);
         if (0 == person.HowClose)
         {
-            Console.WriteLine($"!!!!!!!!!!!!!!!!!!!!!!{person.Name} guessed the exact value!!!!!!!!!!!!!!!!!!!!!!");
+            TextWriter.RepeatLastChar($"{person.Name} guessed the exact value", 20, '!', 250);
         }
         // the first person is our default winner and remains so until such time as we encounter a person whose guess is closer
         if (null == currentWinner)
@@ -315,7 +315,7 @@ while (null == winner)
     else
     {
         isTieBreakingRound = false;
-        competitors = people; // now that we're not in a runoff, all people are competitors
+        competitors = people; // now that we're not in a runoff, all people are once again competitors
         roundNumber++;
         currentWinner.WinCount++;
         if (roundNumber >= numberOfRounds)
@@ -352,12 +352,31 @@ while (null == winner)
             isTieBreakingRound = false;
             competitors = people;
             Console.WriteLine($"The winner of round {roundNumber} of {numberOfRounds} is {currentWinner.Name}!");
-            Console.WriteLine($"Press the [Enter] key when ready to start the next round.");
-            ConsoleKey rdyKey;
-            do
+
+            // check whether any of the competitors have won enough rounds to make continuing pointless
+            var tippingPoint = numberOfRounds / 2 + 1;
+            var matches = competitors.FindAll(e => e.WinCount >= tippingPoint);
+            if (matches.Count > 0)
             {
-                rdyKey = Console.ReadKey(true).Key;
-            } while (rdyKey != ConsoleKey.Enter);
+                if (matches.Count != 1)
+                {
+                    Console.WriteLine("An error has occurred. There is more than a single winner detected.");
+                }
+                foreach (var person in matches)
+                {
+                    Console.WriteLine($"{person.Name} has won {person.WinCount} rounds out of {numberOfRounds}. There is no point in running any more rounds.");
+                    winner = person;
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Press the [Enter] key when ready to start the next round.");
+                ConsoleKey rdyKey;
+                do
+                {
+                    rdyKey = Console.ReadKey(true).Key;
+                } while (rdyKey != ConsoleKey.Enter);
+            }
             clearConsole = true;
         }
     }
